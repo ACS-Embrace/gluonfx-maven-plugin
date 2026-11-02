@@ -8,6 +8,35 @@ GluonFX plugin for maven leverages GraalVM, OpenJDK and JavaFX 11+,
 by compiling into native code the Java Client application and all its required dependencies, 
 so it can directly be executed as a native application on the target platform.
 
+## Versions and releases (Embrace)
+
+This is Embrace's copy of Gluon's plugin. It is versioned `major.minor.patch-embrace`, independently
+of Gluon's numbering:
+
+* **major** when Embrace's builds must change to use the release,
+* **minor** for a new feature they can take without changes,
+* **patch** for fixes only.
+
+The `-embrace` marker matters: our releases are published under the same name as Gluon's
+(`com.gluonhq:gluonfx-maven-plugin`), so the marker stops a build from picking up a Gluon release
+of the same number. `CHANGELOG.md` lists what each version contains and which Substrate it uses.
+
+* **The plugin decides the Substrate version** (`substrate.version` in `pom.xml`), so Embrace's
+  APK build only names the plugin version.
+* **Test builds** are versioned like `2.0.1-embrace-dev-<topic>` and installed to local Maven only
+  (`mvn clean install`).
+* **Releases** are published with the `release` profile, which holds the S3 repository: a plain
+  `mvn deploy` has nowhere to publish to. The profile first refuses `-SNAPSHOT` and `-dev` versions,
+  snapshot dependencies, and uncommitted changes. The plugin has no native code, so it can be
+  published from any machine.
+  1. Set the version (and `substrate.version` if it changes) in `pom.xml`, and add its entry to
+     `CHANGELOG.md`, on `embrace_master`.
+  2. Publish: `mvn -Prelease clean deploy` (needs the S3 credentials the wagon uses).
+  3. Tag the commit with the version and push the tag, e.g. `git tag 2.0.0-embrace && git push origin 2.0.0-embrace`.
+* The jar's manifest carries `Implementation-Version` and `Git-Commit`.
+
+Versions before 2.0.0-embrace were `1.1.x-SNAPSHOT`, which could change between builds.
+
 ## Requirements
 
 Check the requirements for the [target platform](https://docs.gluonhq.com/#_platforms) before you get started.
