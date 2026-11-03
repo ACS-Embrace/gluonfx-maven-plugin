@@ -32,7 +32,8 @@ of the same number. `CHANGELOG.md` lists what each version contains and which Su
   1. Set the version (and `substrate.version` if it changes) in `pom.xml`, and add its entry to
      `CHANGELOG.md`, on `embrace_master`.
   2. Publish: `mvn -Prelease clean deploy` (needs the S3 credentials the wagon uses).
-  3. Tag the commit with the version and push the tag, e.g. `git tag 2.0.0-embrace && git push origin 2.0.0-embrace`.
+  3. Tag the commit with an annotated tag and push it, e.g.
+     `git tag -a 2.0.0-embrace -m "2.0.0-embrace" && git push origin 2.0.0-embrace`.
 * The jar's manifest carries `Implementation-Version` and `Git-Commit`.
 
 Versions before 2.0.0-embrace were `1.1.x-SNAPSHOT`, which could change between builds.
